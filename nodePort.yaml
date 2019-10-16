@@ -14,3 +14,19 @@ spec:
       targetPort: 80
       nodePort: 32000
       protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service
+spec:
+  type: NodePort
+  selector:
+    tier: front-end
+    app: httpd
+  ports:
+    - name: nginx
+      port: 80
+      targetPort: 80
+      nodePort: 32001
+      protocol: TCP

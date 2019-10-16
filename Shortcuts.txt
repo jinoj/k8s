@@ -1,0 +1,11 @@
+pods                   - po
+nodes                  - no
+deployments            - deploy
+replicasets            - rs
+daemonsets             - ds
+statefulsets           - sts
+jobs
+cronjobs               - cj
+services               - svc
+persistentvolumes      - pv
+persistentvolumeclaims - pvc
