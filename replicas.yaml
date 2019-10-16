@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: ReplicaSet              # Kind replicaset previously handled by ReplicaController
+metadata:
+  name: nginx-repica          # Name of replicas
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2                 # Number of Pods running at a state
+  template:                   # template for the pods
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx           # Pod Name
+        image: nginx          # Image Name
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+    - name: nginx
+      port: 80
+      targetPort: 80
+      nodePort: 32000
+      protocol: TCP
