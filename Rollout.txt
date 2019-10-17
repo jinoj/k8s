@@ -1,0 +1,6 @@
+kubectl rollout status deployment nginx-deployments
+kubectl rollout history deployment nginx-deployments
+kubectl rollout undo deployment nginx-deployments --to-revison=1 or 2 
+kubectl rollout status deployment nginx-deployments
+kubectl rollout history deployment nginx-deployments --revision=4 -o yaml
+kubectl rollout history deployment nginx-deployments --revision=4
