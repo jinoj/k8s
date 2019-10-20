@@ -1,0 +1,4 @@
+kubectl config get-contexts
+kubectl config view
+kubectl config current-context
+kubectl config set-context jino --namespace=jino --user=minikube --cluster=minikube

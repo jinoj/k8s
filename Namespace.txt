@@ -1,0 +1,17 @@
+Namespaces are intended for use in environments with many users spread across multiple teams, or projects. For clusters with a few to tens of users, you should not need to create or think about namespaces at all. Start using namespaces when you need the features they provide.
+
+# kubectl get namespaces
+
+NAME              STATUS   AGE
+default           Active   6d22h
+kube-node-lease   Active   6d22h
+kube-public       Active   6d22h
+kube-system       Active   6d22h
+
+
+Example: jino(Namespace)
+
+# kubectl run nginx --image=nginx --namespace=jino
+# kubectl get pods --namespace=jino
+
+# kubectl config set-context --current --namespace=jino
