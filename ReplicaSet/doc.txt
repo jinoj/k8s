@@ -1,0 +1,2 @@
+This old name called as Replica Controller
+Now this is called ReplicaSet
