@@ -1,51 +1,54 @@
+#kubectl get pod [Pod Name]
 
-# Please edit the object below. Lines beginning with a '#' will be ignored,
-# and an empty file will abort the edit. If an error occurs while saving this file will be
-# reopened with the relevant failures.
-#
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: "2019-10-16T11:45:58Z"
-  generateName: nginx-deployments-9b956f9bf-
-  labels:
-    app: nginx
-    pod-template-hash: 9b956f9bf
-  name: nginx-deployments-9b956f9bf-74wn5
-  namespace: default
-  ownerReferences:
-  - apiVersion: apps/v1
-    blockOwnerDeletion: true
-    controller: true
-    kind: ReplicaSet
-    name: nginx-deployments-9b956f9bf
-    uid: aa76f76e-c823-42c3-8f0c-c1c08312612d
-  resourceVersion: "149434"
-  selfLink: /api/v1/namespaces/default/pods/nginx-deployments-9b956f9bf-74wn5
-  uid: 75578885-2b4f-4021-98b0-72ece8cce1ee
-spec:
-  containers:
-  - image: nginx
-    imagePullPolicy: Always
-    name: webapp
-    ports:
-    - containerPort: 80
-      protocol: TCP
-    resources: {}
-    terminationMessagePath: /dev/termination-log
-    terminationMessagePolicy: File
-    volumeMounts:
-    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-      name: default-token-vbp9f
-      readOnly: true
-  dnsPolicy: ClusterFirst
-  enableServiceLinks: true
-  nodeName: minikube
-  priority: 0
-  restartPolicy: Always
-  schedulerName: default-scheduler
-  securityContext: {}
-  serviceAccount: default
-  serviceAccountName: default
-  terminationGracePeriodSeconds: 30
-  tolerations:
+Name:         web-pods
+Namespace:    default
+Priority:     0
+Node:         minikube/10.0.2.15
+Start Time:   Sat, 26 Oct 2019 22:11:26 +0530
+Labels:       app=nginx
+              tier=front
+              version=v1
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{"app":"nginx","tier":"front","version":"v1"},"name":"web-pods","nam...
+Status:       Running
+IP:           172.17.0.4
+IPs:
+  IP:  172.17.0.4
+Containers:
+  nginx:
+    Container ID:   docker://41a6b8082d39c428d86a9bc4d679a5a2a592164af2666542f315b8f8e4268083
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:922c815aa4df050d4df476e92daed4231f466acc8ee90e0e774951b0fd7195a4
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sat, 26 Oct 2019 22:11:33 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-vbp9f (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-vbp9f:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-vbp9f
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age        From               Message
+  ----    ------     ----       ----               -------
+  Normal  Scheduled  <unknown>  default-scheduler  Successfully assigned default/web-pods to minikube
+  Normal  Pulling    25s        kubelet, minikube  Pulling image "nginx"
+  Normal  Pulled     19s        kubelet, minikube  Successfully pulled image "nginx"
+  Normal  Created    19s        kubelet, minikube  Created container nginx
+  Normal  Started    19s        kubelet, minikube  Started container nginx
+
