@@ -1,0 +1,31 @@
+Pods States:
+    Pending : in progress
+    Running
+    Succeeded : successfully exited
+    Failed
+    Unknown
+
+Launching Pods
+--------------
+# kubectl apply -f [pod filename].yam;
+
+Monitering all resorces
+-----------------------
+# watch -n 1  kubectl get pods,deploy,rs,svc
+
+View Pods
+----------
+#kubectl get pods
+#kubectl get po -o wide
+#kubectl get pods [Pod Name]
+
+Pods Details information:
+-------------------------
+#kubectl describe pods [Pod Name]
+
+
+Operate the pod
+---------------
+#kubectl logs vote
+#kubectl exec -it [Pode Name] bash   #Username with Hostname
+#kubectl exec -it [Pode Name] sh     #Hostname
