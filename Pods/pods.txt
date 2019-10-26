@@ -1,9 +1,10 @@
 Pods States:
-    Pending : in progress
-    Running
-    Succeeded : successfully exited
-    Failed
-    Unknown
+------------
+				Pending   : in progress
+				Running
+				Succeeded : successfully exited
+				Failed
+				Unknown
 
 Launching Pods
 --------------
@@ -26,6 +27,13 @@ Pods Details information:
 
 Operate the pod
 ---------------
-#kubectl logs vote
+#kubectl logs [Pod Name]
 #kubectl exec -it [Pode Name] bash   #Username with Hostname
 #kubectl exec -it [Pode Name] sh     #Hostname
+
+MultiContainer Pods
+--------------------
+#kubectl logs [Pod Name] -c [Container Name]
+#kubectl exec -it [Pode Name] -c [Container Name] bash   #Username with Hostname
+#kubectl exec -it [Pode Name] -c [Container Name] sh     #Hostname
+
