@@ -1,0 +1,137 @@
+3 Nodes Instaltion
+1 - Master  node
+2 - worker nodes
+
+OS	    Version		Codename
+Ubuntu	16.04		  Xenial
+
+###############################################################################
+#                                                                             #
+#                    start 3 node installtion dependencies                    #
+#                                                                             #
+###############################################################################
+
+Create Kubernetes Repository
+----------------------------
+
+We need to create a repository to download Kubernetes.
+
+#sudo -s
+#curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+#cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+Installation of the packages
+-----------------------------
+
+Update the repository.
+----------------------
+#apt-get update -y
+
+Install All the packages with dependencies
+------------------------------------------
+#apt-get install -y docker.io kubelet kubeadm kubectl kubernetes-cni
+
+#rm -rf /var/lib/kubelet/*
+
+Setup sysctl configs
+---------------------
+In order for many container networks to work, the following needs to be enabled on each node.
+#sysctl net.bridge.bridge-nf-call-iptables=1
+
+###############################################################################
+#                                                                             #
+#                           STOP HERE 3 NODE INSTALL DEP'S                    #
+#                                                                             #
+###############################################################################
+
+Initializing Master
+-------------------
+
+This tutorial assumes MasterNode as the master and used kubeadm as a tool to install and setup the cluster. Please update the IP address of the master accordingly.
+
+Example MasterNode IP 125.65.64.142
+
+Run this on MasterNode (Initiate As Master)
+
+#kubeadm init --apiserver-advertise-address 159.203.170.85 --pod-network-cidr=192.168.0.0/16
+
+After master being initialized, it should display the command which could be used on all worker/nodes to join the k8s cluster.
+
+example:
+--------
+
+kubeadm join --token c04797.8db60f6b2c0dd078 192.168.12.10:6443 --discovery-token-ca-cert-hash sha256:88ebb5d5f7fdfcbbc3cde98690b1dea9d0f96de4a7e6bf69198172debca74cd0
+
+Copy and paste it on all worker nodes node.
+
+On successfully joining the master, you should see output similar to following,
+
+
+
+root@node-01:~# kubeadm join --token c04797.8db60f6b2c0dd078 159.203.170.85:6443 --discovery-token-ca-cert-hash sha256:88ebb5d5f7fdfcbbc3cde98690b1dea9d0f96de4a7e6bf69198172debca74cd0
+[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[preflight] Running pre-flight checks
+[discovery] Trying to connect to API Server "159.203.170.85:6443"
+[discovery] Created cluster-info discovery client, requesting info from "https://159.203.170.85:6443"
+[discovery] Requesting info from "https://159.203.170.84:6443" again to validate TLS against the pinned public key
+[discovery] Cluster info signature and contents are valid and TLS certificate validates against pinned roots, will use API Server "159.203.170.84:6443"
+[discovery] Successfully established connection with API Server "159.203.170.84:6443"
+[bootstrap] Detected server version: v1.8.2
+[bootstrap] The server supports the Certificates API (certificates.k8s.io/v1beta1)
+
+Node join complete:
+* Certificate signing request sent to master and response
+  received.
+* Kubelet informed of new secure connection details.
+
+Run 'kubectl get nodes' on the master to see this machine join.
+
+Setup the admin client - Kubectl
+
+
+
+
+On MasterNode
+----------------
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Installing CNI with Weave
+--------------------------
+
+Installing overlay network is necessary for the pods to communicate with each other across the hosts. It is necessary to do this before you try to deploy any applications to your cluster.There are various overlay networking drivers available for kubernetes. We are going to use Weave Net.
+
+#export kubever=$(kubectl version | base64 | tr -d '\n')
+#kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+
+Validating the Setup
+--------------------
+
+root@kube-01:~# kubectl get nodes
+NAME           STATUS    ROLES     AGE       VERSION
+MansterNaode   Ready     master    9m        v1.8.2
+node1          Ready     <none>    4m        v1.8.2
+node2          Ready     <none>    4m        v1.8.2
+
+Additional Status Commands
+---------------------------
+#kubectl version
+#kubectl cluster-info
+#kubectl get pods -n kube-system
+#kubectl get events
+
+It will take a few minutes to have the cluster up and running with all the services.
+
+Troubleshooting Issues:
+-----------------------
+Check events
+kubectl get events
+
+Check Logs
+----------
+#kubectl get pods -n kube-system
+#kubectl logs <pod> -n kube-system
