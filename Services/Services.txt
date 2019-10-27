@@ -1,0 +1,19 @@
+#Services use policy
+
+Name:                     web-service
+Namespace:                default
+Labels:                   role=web-service
+Annotations:              kubectl.kubernetes.io/last-applied-configuration:
+                            {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"role":"web-service"},"name":"web-service","namespace":"default...
+Selector:                 role=webserver,version=v1
+Type:                     NodePort
+IP:                       10.97.190.186
+External IPs:             192.168.43.138
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  32001/TCP
+Endpoints:                172.17.0.10:80,172.17.0.11:80,172.17.0.12:80 + 2 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+

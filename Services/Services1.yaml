@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-replica
+spec:
+  replicas: 5
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      role: webserver
+    matchExpressions:
+      - {key: version, operator: In, values: [v1, v2, v3]}
+  template:
+    metadata:
+      name: web
+      labels:
+        role: webserver
+        version: v1
+        tier: frond-end
+    spec:
+      containers:
+        - name: web
+          image: nginx
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  labels:
+    role: web-service
+spec:
+  selector:
+    role: webserver
+    version: v1
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 32001
+  externalIPs:
+    - 192.168.43.138
