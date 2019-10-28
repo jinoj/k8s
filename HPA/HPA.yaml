@@ -7,11 +7,11 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 2   # maxSurge is an optional field that specifies the maximum number of Pods that can be created over the desired number of Pods.
-      maxUnavailable: 1   # maxSurge is an optional field that specifies the maximum number of Pods that can be created over the desired number of Pods.
+      maxSurge: 2         # maxSurge is an optional field that specifies the maximum number of Pods that can be created over the desired number of Pods.
+      maxUnavailable: 1
   revisionHistoryLimit: 4
   paused: false
-  replicas: 2
+  replicas: 4
   minReadySeconds: 10
   selector:
     matchLabels:
@@ -32,6 +32,13 @@ spec:
           ports:
             - containerPort: 80
               protocol: TCP
+          resources:
+            requests:         # Minimum Value
+              memory: "100Mi"
+              cpu: "250m"
+            limits:           # Maximum Value
+              memory: "128Mi"
+              cpu: "300m"     # 1 Core = 1000m
 ---
 apiVersion: v1
 kind: Service
@@ -43,25 +50,25 @@ spec:
   selector:
     role: webserver
     version: v1
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 80
+      targetPort: 80
+      nodePort: 32001
+  externalIPs:
+    - 192.168.43.138
 
 ---
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
 metadata:
-  name: test
-  annotations:
-     kubernetes.io/ingress.class: traefik
+  name: nginx-deployment-vote
 spec:
-  rules:
-  - host: jino.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: web-service
-          servicePort: 80
-#  tls:
-#    - secretName: traefik-ui-tls-cert
+  minReplicas: 4
+  maxReplicas: 15
+  targetCPUUtilizationPercentage: 40
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment
+

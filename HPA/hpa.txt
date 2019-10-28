@@ -1,0 +1,20 @@
+Name:                                                  nginx-deployment-vote
+Namespace:                                             default
+Labels:                                                <none>
+Annotations:                                           kubectl.kubernetes.io/last-applied-configuration:
+                                                         {"apiVersion":"autoscaling/v1","kind":"HorizontalPodAutoscaler","metadata":{"annotations":{},"name":"vote","namespace":"default"},"spec":{...
+CreationTimestamp:                                     Mon, 28 Oct 2019 22:36:40 +0530
+Reference:                                             Deployment/nginx-deployment
+Metrics:                                               ( current / target  )
+  resource cpu on pods  (as a percentage of request):  0% (0) / 40%
+Min replicas:                                          4
+Max replicas:                                          15
+Deployment pods:                                       4 current / 4 desired
+Conditions:
+  Type            Status  Reason               Message
+  ----            ------  ------               -------
+  AbleToScale     True    ScaleDownStabilized  recent recommendations were higher than current one, applying the highest recent recommendation
+  ScalingActive   True    ValidMetricFound     the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  False   DesiredWithinRange   the desired count is within the acceptable range
+Events:           <none>
+}}
