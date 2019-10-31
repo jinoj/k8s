@@ -55,3 +55,5 @@ roleRef:
 # cd /home/jino/.certs
 #kubectl  config set-credentials jino --client-certificate=jino.crt --client-key=jino.key
 #kubectl config set-cluster kubernetes --certificate-authority=ca.crt
+
+#kubectl config set-context $(kubectl config current-context) --namespace jino ##now see exact namespace only!!
